@@ -1,0 +1,38 @@
+name = "emby-nebula"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+# 注：singlefile/ 目录（路线 A 单文件版，v3.7.4）不参与本部署，仅供 Dashboard 粘贴下载
+
+# ── 静态 UI 资产 ─────────────────────────────────────────────
+# run_worker_first = true：所有请求先进 Worker，由 serveUiAsset 鉴权后
+# 按需发放 login.html / app.html / speedtest.html，防止静态页被未认证直连
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# ── D1 数据库 ────────────────────────────────────────────────
+# 必须绑定与原单文件部署相同的 D1 数据库（Dashboard → Storage & Databases → D1）
+[[d1_databases]]
+binding = "DB"
+database_name = "emby-proxy-db"
+database_id = "07d58c58-00b7-4dbf-8091-957f35f52ce5"
+
+# ── 定时任务 ────────────────────────────────────────────────
+# 与原 Dashboard 里配置的 Cron 保持一致（每日统计播报 / 保活 / 更新检查 / 日志清理）
+[triggers]
+crons = ["0 3 * * *"]
+
+# ── 普通明文变量（按原 Dashboard 变量清单补齐）───────────────
+# [vars]
+# CF_ZONE_ID = "your-zone-id"
+# CF_ACCOUNT_ID = "your-account-id"
+# CF_WORKER_NAME = "emby-nebula"
+# CF_DOMAIN = "panel.example.com"
+
+# ── 密钥类变量请用命令配置（服务端加密存储，勿写入本文件）────
+# npx wrangler secret put ADMIN_TOKEN
+# npx wrangler secret put CF_API_TOKEN
+# npx wrangler secret put TG_BOT_TOKEN
+# npx wrangler secret put TG_CHAT_ID

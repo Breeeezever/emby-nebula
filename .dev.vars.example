@@ -1,0 +1,7 @@
+# 本地开发用（npx wrangler dev 时生效），勿提交到公开仓库
+ADMIN_TOKEN=local-dev-token
+# CF_API_TOKEN=
+# CF_ZONE_ID=
+# CF_ACCOUNT_ID=
+# CF_WORKER_NAME=
+# CF_DOMAIN=
